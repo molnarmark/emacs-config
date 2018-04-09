@@ -142,11 +142,64 @@
   :ensure t
   :config
   (progn
-    (projectile-mode t)
+    (projectile-global-mode)
+    )
+(setq projectile-completion-system 'ivy))
+
+(use-package counsel-projectile
+  :ensure t
+  :config
+  (progn
+    (counsel-projectile-mode)
+    ))
+
+;; Which-key
+(use-package which-key
+  :ensure t
+  :config
+  (progn
+    which-key-mode
+   ))
+
+;; Git Gutter
+(use-package git-gutter
+  :ensure t
+  :config
+  (progn
+    (global-git-gutter-mode +1)
   ))
+
+;; Magit
+(use-package magit
+  :ensure t
+  :init
+  (progn
+  (bind-key "C-x g" 'magit-status)
+  ))
+
+;; Dumb Jump
+(use-package dumb-jump
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g j" . dumb-jump-go)
+         ("M-g i" . dumb-jump-go-prompt)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window))
+  :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
+  :ensure)
+
+(global-hl-line-mode t)
 
 ;; Key bindings
 (global-set-key "\C-cd" 'kill-whole-line) 
+(global-set-key (kbd "C-u") 'undo)
+(global-set-key (kbd "C-s") 'save-buffer)
+(global-set-key (kbd "C-f") 'isearch-forward)
+(define-key isearch-mode-map "\C-f" 'isearch-repeat-forward)
+
+;; Custom defuns
+(defun only-current-buffer () 
+  (interactive)                                                                   
+    (mapc 'kill-buffer (cdr (buffer-list (current-buffer)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -155,7 +208,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (projectile markdown-mode auto-complete neotree drag-stuff highlight-indent-guides use-package))))
+    (dumb-jump magit which-key Which-key counsel-projectile git-gutter projectile markdown-mode auto-complete neotree drag-stuff highlight-indent-guides use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
