@@ -2,6 +2,13 @@
 
 (require 'package)
 
+;; Disabling the splash screen & welcome message
+(setq inhibit-startup-message t) 
+(setq initial-scratch-message nil)
+
+;; Maximizing Emacs
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; Adding MELPA
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -11,6 +18,11 @@
   (when (< emacs-major-version 24)
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
+
+;; Ace Window
+(use-package ace-window
+  :ensure t
+  )
 
 ;; Highlight Indent Guides
 (use-package highlight-indent-guides
@@ -22,6 +34,7 @@
   )
 )
 
+;; For the theme
 (use-package alect-themes
   :ensure t
 )
@@ -112,16 +125,6 @@
     (drag-stuff-define-keys)
   ))
 
-;; Web Mode
-(use-package web-mode
-  :ensure t
-  )
-
-;; PHP Mode
-(use-package php-mode
-  :ensure t
-  )
-
 ;; Smart parens
 (use-package smartparens
   :ensure t
@@ -137,14 +140,14 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
-;; Projectile
-(use-package projectile
+ ;; Projectile
+ (use-package projectile
   :ensure t
   :config
   (progn
     (projectile-global-mode)
     )
-(setq projectile-completion-system 'ivy))
+ (setq projectile-completion-system 'ivy))
 
 (use-package counsel-projectile
   :ensure t
@@ -187,14 +190,30 @@
   :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
   :ensure)
 
+(display-time-mode)
 (global-hl-line-mode t)
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+(winner-mode 1)
 
 ;; Key bindings
 (global-set-key "\C-cd" 'kill-whole-line) 
-(global-set-key (kbd "C-u") 'undo)
+(global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-s") 'save-buffer)
 (global-set-key (kbd "C-f") 'isearch-forward)
 (define-key isearch-mode-map "\C-f" 'isearch-repeat-forward)
+
+;; Web mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
 
 ;; Custom defuns
 (defun only-current-buffer () 
@@ -206,9 +225,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(magit-dispatch-arguments nil)
  '(package-selected-packages
    (quote
-    (dumb-jump magit which-key Which-key counsel-projectile git-gutter projectile markdown-mode auto-complete neotree drag-stuff highlight-indent-guides use-package))))
+    (emacs-powerline beacon dumb-jump magit which-key Which-key counsel-projectile git-gutter projectile markdown-mode auto-complete neotree drag-stuff highlight-indent-guides use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
