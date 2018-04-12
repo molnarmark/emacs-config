@@ -61,7 +61,7 @@
 
 ;; Setting the  default font
 (set-face-attribute 'default nil
-  :family "Consolas"
+  :family "Hack"
   :height 140
   :weight 'normal
   :width 'normal
@@ -71,6 +71,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+(ido-mode)
 
 ;; Line numbers are a great thing to have
 (global-linum-mode t)
@@ -115,6 +116,14 @@
     (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
   )
 )
+
+;; Powerline
+(use-package powerline
+  :ensure t
+  )
+
+(powerline-center-theme)
+(setq powerline-default-separator 'wave)
 
 ;; Drag Stuff
 (use-package drag-stuff
@@ -190,11 +199,29 @@
   :config (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
   :ensure)
 
+;; Tildes
+(use-package vi-tilde-fringe
+  :ensure t
+  :config
+  (progn
+    (global-vi-tilde-fringe-mode 1)
+    ))
+
+;; Smex
+(use-package smex
+  :ensure t
+  :config
+  (progn
+    (global-set-key (kbd "M-x") 'smex)
+    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+    ))
+
 (display-time-mode)
 (global-hl-line-mode t)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
 (winner-mode 1)
+(ido-mode)
 
 ;; Key bindings
 (global-set-key "\C-cd" 'kill-whole-line) 
